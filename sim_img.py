@@ -9,6 +9,7 @@ import skimage.util
 import skimage.segmentation
 import numpy
 
+EPS = 1e-6
 
 # "Selective Search for Object Recognition" by J.R.R. Uijlings et al.
 #
@@ -20,12 +21,23 @@ def _sim_colour(r1, r2):
     """
     return sum([min(a, b) for a, b in zip(r1["hist_c"], r2["hist_c"])])
 
+def _sim_colour_norm(r1, r2):
+    """
+        calculate the sum of histogram intersection of colour
+    """
+    return sum([min(a, b) / (max(a, b) + EPS) for a, b in zip(r1["hist_c"], r2["hist_c"])]) / len(r1["hist_c"])
 
 def _sim_texture(r1, r2):
     """
         calculate the sum of histogram intersection of texture
     """
     return sum([min(a, b) for a, b in zip(r1["hist_t"], r2["hist_t"])])
+
+def _sim_texture_norm(r1, r2):
+    """
+        calculate the sum of histogram intersection of texture
+    """
+    return sum([min(a, b) / (max(a, b) + EPS) for a, b in zip(r1["hist_t"], r2["hist_t"])]) / len(r1["hist_t"])
 
 def _calc_colour_hist(img):
     """
@@ -126,7 +138,7 @@ def get_feature(img):
 def calc_sim(r1, r2):
     # r1 = _generate_hist(img1)
     # r2 = _generate_hist(img2)
-    return _sim_colour(r1, r2), _sim_texture(r1, r2)
+    return _sim_colour_norm(r1, r2), _sim_texture_norm(r1, r2)
 
 def _extract_regions(img):
 
