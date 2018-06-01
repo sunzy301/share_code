@@ -25,6 +25,9 @@ CAFFEMODEL_PATH = './models/VGG_ILSVRC_19_layers.caffemodel'
 DEBUG = 1
 
 def calc_sim_euc(feature1, feature2):
+    '''
+    计算两个特征向量之间欧氏距离
+    '''
     assert feature1.shape[0] == feature2.shape[0]
     array_len = feature1.shape[0]
     array_sum = 0
@@ -35,6 +38,9 @@ def calc_sim_euc(feature1, feature2):
     return math.sqrt(array_sum)
 
 def calc_sim_cos(feature1, feature2):
+    '''
+    计算两个特征向量之间cos夹角
+    '''
     assert feature1.shape[0] == feature2.shape[0]
     array_len = feature1.shape[0]
     sum1 = 0
@@ -90,6 +96,7 @@ def extract_feature_from_dir(dir_path, output_dir):
 
     Args:
         dir_path:图像文件夹位置
+        output_dir:结果输出文件夹位置
     '''
     # 设置caffe运行和预处理参数
     caffe.set_mode_gpu()
